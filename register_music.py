@@ -44,9 +44,11 @@ def visitfile(file):
 
 def choose_dir(window):
     """This function is used to choose the directory where audio files are located"""
-    window.source_folder=filedialog.askdirectory(parent=window, initialdir='.',
+    window.source_folder = filedialog.askdirectory(parent=window, initialdir='.',
                                                    title="Sélectionner le répertoire dans lequel se trouve vos fichiers de musique")
-    return window
+    if not window.source_folder:
+        window.source_folder = "."
+    return window.source_folder
      
 
 
@@ -75,7 +77,7 @@ now = datetime.now()
 dte_string = now.strftime("%Y%m%d%H%M")
 file_name = '{}/musiques_{}.csv'.format(home, dte_string)
 
-create_file(file_name, walktree(choose_dir(window).source_folder, visitfile, audio_file_extensions, files_to_keep))
+create_file(file_name, walktree(choose_dir(window), visitfile, audio_file_extensions, files_to_keep))
 window.destroy()
 window.mainloop()
 
